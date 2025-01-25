@@ -6,6 +6,7 @@ How to Set-Up:
 1. Unzip the Archive
 2. Start Bully
 3. Run BullyModMenu.exe
+4. 
 Done!
 
 Now you can choose between these Options in the Console:
