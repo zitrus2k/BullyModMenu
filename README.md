@@ -1,4 +1,4 @@
-# BullyModMenu
+# BullyModMenu by zitrus2k
 This is a simple Console based External ModMenu for the Game Bully:Scholarship Edition written in C++.
 
 How to Set-Up:
