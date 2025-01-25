@@ -3,8 +3,9 @@ This is a simple Console based External ModMenu for the Game Bully:Scholarship E
 
 How to Set-Up:
 
-1. Start Bully
-2. Run BullyModMenu.exe
+1. Unzip the Archive
+2. Start Bully
+3. Run BullyModMenu.exe
 Done!
 
 Now you can choose between these Options in the Console:
