@@ -14,6 +14,11 @@ Now you can choose between these Options in the Console:
 3. Max. Health
 4. Kill (Is kinda broken, it only makes you onehit)
 
+The .exe will probably be marked as a Trojan by the most Antiviruses, 
+because it Reads and Manipulates other Applications Memory -
+In this case Bully.exe
+Just create a Exeption in your AV and it should work.
+
 You can use this Code however you want, but Credit me @zitrus2k)!
 
 Made by zitrus2k
