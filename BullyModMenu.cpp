@@ -5,6 +5,8 @@
 #include <thread>
 #include <conio.h>
 
+bool godModeEnabled = false; // Toggle god
+
 DWORD GetProcessIdByName(const std::wstring& processName) {
     PROCESSENTRY32 entry;
     entry.dwSize = sizeof(PROCESSENTRY32);
@@ -64,6 +66,17 @@ void WritePointer(HANDLE hProcess, uintptr_t baseAddress, uintptr_t offset, T va
     }
 }
 
+void GodModeThread(HANDLE hProcess, uintptr_t baseAddress, uintptr_t healthOffset, uintptr_t maxHealthOffset) {
+    while (true) {
+        if (godModeEnabled) {
+            float maxHealth = ReadPointer<float>(hProcess, baseAddress, maxHealthOffset);
+            WritePointer<float>(hProcess, baseAddress, healthOffset, maxHealth);
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+}
+
+
 
 void DisplayHeader() {
     system("cls");
@@ -87,12 +100,15 @@ void DisplayMenu() {
     std::cout << "\n [1] Add $100" << std::endl;
     std::cout << " [2] Subtract $100" << std::endl;
     std::cout << " [3] Max Health" << std::endl;
-    std::cout << " [4] Kill (Broken)" << std::endl;
+    std::cout << " [4] Remove Health" << std::endl;
+    std::cout << " [5] Toggle Godmode [" << (godModeEnabled ? "ON" : "OFF") << "]" << std::endl;
     std::cout << " Select an option: ";
 }
 
 
 void HandleUserInput(HANDLE hProcess, uintptr_t baseAddress, uintptr_t moneyOffset, uintptr_t healthOffset, uintptr_t maxHealthOffset) {
+    std::thread godModeThread(GodModeThread, hProcess, baseAddress, healthOffset, maxHealthOffset);
+    godModeThread.detach();
     while (true) {
         // Read values
         int moneyRaw = ReadPointer<int>(hProcess, baseAddress, moneyOffset);
@@ -132,11 +148,14 @@ void HandleUserInput(HANDLE hProcess, uintptr_t baseAddress, uintptr_t moneyOffs
             break;
 
         case 4:
-            // Kill (broken)
+            // Remove health
             WritePointer<float>(hProcess, baseAddress, healthOffset, 0.0f);
-            std::cout << "\n Health set to 0! (Killed)\n";
+            std::cout << "\n Health Removed\n";
             break;
-
+        case 5:
+            godModeEnabled = !godModeEnabled;
+            std::cout << "\n Godmode " << (godModeEnabled ? "Enabled!" : "Disabled!") << "\n";
+            break;
 
         default:
             std::cout << "\n Invalid Option! Try again.\n";
